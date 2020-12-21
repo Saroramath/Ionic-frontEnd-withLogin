@@ -21,7 +21,7 @@ const HomePage: React.FC = () => {
       </IonHeader>
       <IonContent className="ion-padding">
       <IonList>
-        {entries.map((entry) => <IonItem button key ={entry.id} routerLink ={`/entries/${entry.id}`}> {entry.title}
+        {entries.map((entry) => <IonItem button key ={entry.id} routerLink ={`/my/entries/${entry.id}`}> {entry.title}
           </IonItem>)}
       </IonList>
       </IonContent>

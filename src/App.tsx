@@ -1,48 +1,45 @@
 import {
-  IonApp, IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs
+  IonApp, IonRouterOutlet, IonTabs
 } from '@ionic/react';
 import {IonReactRouter} from '@ionic/react-router'
-import React from 'react';
-import { home as homeIcon, settings as settingsIcon} from 'ionicons/icons';
-import {BrowserRouter,Redirect, Route} from 'react-router-dom';
-import HomePage from './pages/HomePage'
-import SettingsPage from './pages/SettingsPage'
-import EntryPage from './pages/EntryPage';
+import React, { useState } from 'react';
+
+import {Redirect, Route, Switch} from 'react-router-dom';
+import LoginPage from './pages/LoginPage';
+import AppTabs from './AppTabs';
+import { AuthContext } from './auth';
+import NotFoundPage from './pages/NotFoundPage';
 
 const App: React.FC = () => {
+  const [loggedIn,setLoggedIn] = useState(false)
+  console.log(`rendring App with loggedIn =${loggedIn}`);
   return (
     <IonApp>
+      <AuthContext.Provider value= {{loggedIn}}>
       <IonReactRouter>
-        <IonTabs>
+        
 
        
-        <IonRouterOutlet>
-      <Route exact path="/entries">
-        <HomePage />
-      </Route>
-      <Route exact path="/settings">
-        <SettingsPage />
-      </Route>
-      <Route exact path="/entries/:id">
-        <EntryPage />
-      </Route>
-      <Redirect exact path= "/" to="/entries" />
-      </IonRouterOutlet>
-      <IonTabBar slot ="bottom">
-        <IonTabButton tab= "home" href="/entries">
+        <Switch>
+        <Route exact path="/login">
+      <LoginPage onLogin={() => setLoggedIn(true)} /> 
+        </Route>
 
-          <IonIcon icon={homeIcon} />
-          <IonLabel>Home</IonLabel>
-          </IonTabButton>
-        <IonTabButton tab= "settings" href="/settings">
-          <IonIcon icon={settingsIcon} />
-          <IonLabel>Settings</IonLabel>
-
-        </IonTabButton>
-      </IonTabBar>
-      </IonTabs>
-      </IonReactRouter>
+      <Route path ="/my">
+        <AppTabs  />
+      </Route>
       
+      <Redirect exact path= "/" to="/my/entries" />
+      <Route>
+        <NotFoundPage />
+      </Route>
+
+      
+      </Switch>
+      
+      
+      </IonReactRouter>
+      </AuthContext.Provider>
     </IonApp>
   );
 };

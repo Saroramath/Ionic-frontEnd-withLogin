@@ -13,7 +13,7 @@ import {useParams} from 'react-router';
 import {entries} from "../data"
 
 
-function print(a){
+function print(a:any){
   console.log(a)
 
 }
